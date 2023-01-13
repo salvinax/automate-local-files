@@ -28,7 +28,8 @@ A simple script that can download a mp3 file embedded with basic metadata retrie
 
 # screenshots
 <img width="551" alt="screenshot_1" src="https://user-images.githubusercontent.com/113158430/212208828-5447d30a-1a3a-497f-b3db-c4c39f2b6861.png">
-<img width="797" alt="screenshot_2" src="https://user-images.githubusercontent.com/113158430/212208873-5e9c6691-9206-4661-9fb1-8dff47733e74.png">
+<img width="788" alt="screenshot_2" src="https://user-images.githubusercontent.com/113158430/212213051-393e5409-5e77-4a9a-a2db-f135b4bc9a9d.png">
+
 
 # to do
 - Formatting 
