@@ -1,10 +1,11 @@
+
 # step 1: ask user for the link of a video and convert to mp3 and put in music folder x
 # step 3: extract info from video and search in discogs for info and artwork   x
 # step 4: input artwork and info into mp3 files info   x
 # step 5: delete artwork file and move mp3 file to music folder x
 # dependencies you have to warn users about (discogs client, yt_dlp, ffmpg, mutagen)
 
-#TO DO: handle errors and remove code used for testing
+#TO DO: handle errors
 
 from __future__ import unicode_literals
 from secret import folder_path, discogs_token
@@ -17,17 +18,18 @@ import urllib.request
 from mutagen.mp3 import EasyMP3
 from mutagen.id3 import APIC, ID3
 
-#need og username!!!!!! to find it in our files!
-class retrieveSong:
-    # set local files folder for spotify in set_folder.txt
+class DownloadSong:
+    # set local files folder for spotify and discogs token in set_folder.txt
     # to start program write "python retrieve-song.py [link of youtube video]"
+
     def __init__(self, song_link, video_title, results, original_title):
         self.song_link = song_link
         self.video_title = video_title
         self.results = results
         self.original_title = original_title
 
-    def convertlink2mp3(self): 
+    #convert video to mp3
+    def convert_link(self): 
 
         ydl_opts = {
             'format': 'bestaudio',
@@ -44,8 +46,8 @@ class retrieveSong:
             self.video_title = self.original_title = video_info.get('title', None)
             print(self.video_title)
     
-    #retrieve album title, artist, title of song, track number, genre
-    def generatediscogsresults(self):
+    #send a query to the Discogs API; if no results prompt user for other search terms and send another query
+    def generate_discogs_results(self):
         d = discogs_client.Client('AutomateLocalFiles/1.0', user_token= discogs_token)
         self.results = d.search(self.video_title, type = 'release')
         if self.results.count == 0:
@@ -54,12 +56,12 @@ class retrieveSong:
                 self.video_title = input('Write the name of the song and the main artist here and we will look again:')
                 self.results = d.search(self.video_title, type = 'release')
 
-    
-    def browsediscogsresults(self):
+    #retrieve album title, artist, title of song, track number, genre for song
+    def retrieve_metadata(self):
         i = 0
         song_name = []
         release = self.results[0]
-        print(f'How many results: {self.results.count}')
+        print(f'Number of Discogs search results: {self.results.count}')
 
         while song_name == []:
             songlist = []  
@@ -67,19 +69,25 @@ class retrieveSong:
             for songs in release.tracklist:
                 songlist.append(songs.title)
 
+            #find closest track name to search terms 
             song_name = difflib.get_close_matches(self.video_title, songlist, 1, 0.25)
 
             if song_name == []:
-                if i < (self.results.count-1): 
+                # try other next search result; maybe better luck 
+                if i < self.results.count-1: 
                     i+=1
-                    print(i)
                     release = self.results[i]
                 else: 
                     print("Hey! We weren't able to find the track in the Discogs Database using the title of the youtube video.")
-                    self.video_title = input('Write the name of the song and the main artist here and we will look again (if the song is not in english, write it in its original language):')
-                    self.generatediscogsresults()
-                    i = 0
-                    release = self.results[0]
+                    user_input = input('Write the name of the song and main artist here and we will look again (tip: write name of song it in its original language) or press s to exit:')
+                    
+                    if user_input  == 's':
+                        sys.exit("Progam ended by user\n")
+                    else: 
+                        self.video_title = user_input
+                        self.generate_discogs_results()
+                        release = self.results[0]
+                        i = 0
 
         print(f'Album Tracklist: {songlist}')
         song = ''.join(song_name) #convert to string 
@@ -100,16 +108,17 @@ class retrieveSong:
         artist_names = ', '.join(artist.name for artist in release.artists)
         genre = release.genres[0] 
 
-        image = release.images[0]['uri']
-        
+        image = release.images[0]['uri'] #retrieve image uri
+
+        # write image to current directory
         with urllib.request.urlopen(image) as url:
             with open('temp.jpg', 'wb') as f:
                 f.write(url.read())
 
         filename = self.original_title + '.mp3'
 
+        #set metadata 
         file = EasyMP3(filename)
-        #EasyID3.RegisterTextKey('year', 'TDRC'); pprint.pprint(EasyID3.valid_keys.keys())
 
         file['title'] = song
         file['artist'] = artist_names
@@ -131,6 +140,7 @@ class retrieveSong:
         audio.save(v2_version=3)
 
     
+    #remove temp files and move mp3 file to folder selected by user 
     def reset(self):
         filename = self.original_title + '.mp3'
         #delete temp.jpg
@@ -142,11 +152,10 @@ class retrieveSong:
 
 
 if __name__ == '__main__':
-    #take user input
-    song_link = sys.argv[1]
+    song_link = sys.argv[1] #take user input
     video_title = results = original_title = ''
-    song = retrieveSong(song_link, video_title, results, original_title)
-    song.convertlink2mp3()
-    song.generatediscogsresults()
-    song.browsediscogsresults()
+    song = DownloadSong(song_link, video_title, results, original_title)
+    song.convert_link()
+    song.generate_discogs_results()
+    song.retrieve_metadata()
     song.reset()

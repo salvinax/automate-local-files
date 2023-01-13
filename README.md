@@ -4,7 +4,9 @@ A simple script that can download a mp3 file embedded with basic metadata retrie
 # table of contents
 - [Dependencies](#dependencies)
 - [Usage](#usage)
+- [Screenshots](#screenshots)
 - [To do](#to-do)
+
 
 # dependencies
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp)
@@ -24,14 +26,13 @@ A simple script that can download a mp3 file embedded with basic metadata retrie
 2. To run the program write the following command `python download_songs.py link` and replace 'link' with the youtube link of your choice. The link included as an argument can't be the link of the video within a playlist; this is not supported. 
 3. If the program is not able to find a matching result on Discogs using the title of the youtube video, it will ask the user to provide the name of the song and main artist and will send out a new query to the Discogs API. 
 
+# screenshots
+<img width="551" alt="screenshot_1" src="https://user-images.githubusercontent.com/113158430/212208828-5447d30a-1a3a-497f-b3db-c4c39f2b6861.png">
+<img width="797" alt="screenshot_2" src="https://user-images.githubusercontent.com/113158430/212208873-5e9c6691-9206-4661-9fb1-8dff47733e74.png">
+
 # to do
 - Formatting 
 - Error Handling (ex. when user does not provide argument, invalid link...)
 - Test
-- Add more documentation
-
-
-
-
 
 
