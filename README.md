@@ -1,5 +1,5 @@
 # automate local files 🎧
-A simple script that can download a mp3 file embedded with basic metadata retrieved from Discogs (ex. title, album artwork, track number, ect...) from the youtube link of a song. I use it to upload songs that are not available on any streaming services/music platforms and have no metadata on youtube to my Spotify local file library! Uploading songs with the artwork and correct metadata to Spotify manually took me a lot of time which was what prompted me to write this program. Nothing fancy but it does the job and writing this program really helped me practice how to structure classes in python and use different APIs.
+A simple script that can download a mp3 file embedded with basic metadata retrieved from Discogs (ex. title, album artwork, track number, ect...) from the youtube link of a song. I use it to upload songs that are not available on any streaming services/music platforms and have no metadata on youtube to my local file library! Nothing fancy but it does the job and writing this program really helped me practice how to structure classes in python and use different APIs.
 
 # table of contents
 - [Dependencies](#dependencies)
