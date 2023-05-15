@@ -24,7 +24,7 @@ A simple script that can download a mp3 file embedded with basic metadata retrie
 # usage
 1. Before running the file, user must provide a download path for the mp3 file as well as a Discogs API user token in the secret.py file ([how to generate a token](https://www.discogs.com/developers/#page:authentication))
 2. To run the program write the following command `python download_songs.py link` and replace 'link' with the youtube link of your choice. The link included as an argument can't be the link of the video within a playlist; this is not supported. 
-3. If the program is not able to find a matching result on Discogs using the title of the youtube video, it will ask the user to provide the name of the song and main artist and will send out a new query to the Discogs API. 
+3. If the program is not able to find a matching result on Discogs using the title of the youtube video, it will ask the user to provide the name of the song and main artist and will send out a new query to Discogs. 
 
 # screenshots
 <img width="551" alt="screenshot_1" src="https://user-images.githubusercontent.com/113158430/212208828-5447d30a-1a3a-497f-b3db-c4c39f2b6861.png">
